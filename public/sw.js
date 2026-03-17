@@ -1,5 +1,7 @@
 const CACHE_NAME = 'mosaic-shell-v1'
-const ASSETS_TO_CACHE = ['/', '/index.html']
+const APP_SCOPE = self.registration.scope
+const APP_INDEX = new URL('index.html', APP_SCOPE).toString()
+const ASSETS_TO_CACHE = [APP_SCOPE, APP_INDEX]
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -42,7 +44,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone))
           return response
         })
-        .catch(() => caches.match('/index.html'))
+        .catch(() => caches.match(APP_INDEX))
     }),
   )
 })
